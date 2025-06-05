@@ -147,10 +147,12 @@ if __name__ == '__main__':
     
     # Define las distintas configuraciones de redes que quieres probar
     configuraciones = [
-        {'capas_ocultas': 3, 'neuronas_por_capa': 50, 'lr': 0.008, 'max_epochs': 50000},
-        {'capas_ocultas': 3, 'neuronas_por_capa': 100, 'lr': 0.005, 'max_epochs': 50000},
+        {'capas_ocultas': 2, 'neuronas_por_capa': 150, 'lr': 0.008, 'max_epochs': 50000},
+        {'capas_ocultas': 4, 'neuronas_por_capa': 150, 'lr': 0.008, 'max_epochs': 50000},
+        {'capas_ocultas': 3, 'neuronas_por_capa': 100, 'lr': 0.008, 'max_epochs': 50000},
         {'capas_ocultas': 3, 'neuronas_por_capa': 150, 'lr': 0.01, 'max_epochs': 50000},
         {'capas_ocultas': 3, 'neuronas_por_capa': 200, 'lr': 0.008, 'max_epochs': 50000},
+        {'capas_ocultas': 3, 'neuronas_por_capa': 100, 'lr': 0.008, 'max_epochs': 50000},
         {'capas_ocultas': 3, 'neuronas_por_capa': 250, 'lr': 0.008, 'max_epochs': 50000},
         {'capas_ocultas': 3, 'neuronas_por_capa': 300, 'lr': 0.008, 'max_epochs': 50000}
     ]

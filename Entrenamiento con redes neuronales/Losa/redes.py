@@ -56,10 +56,10 @@ class RED_NEURONAL:
     def _construir_modelo(self):
         capas = []
         capas.append(nn.Linear(self.n, self.neuronas))
-        capas.append(nn.PReLU())
+        capas.append(nn.LeakyReLU())
         for _ in range(self.capas - 1):
             capas.append(nn.Linear(self.neuronas, self.neuronas))
-            capas.append(nn.PReLU())
+            capas.append(nn.LeakyReLU())
         capas.append(nn.Linear(self.neuronas, self.m))
         return nn.Sequential(*capas)
 

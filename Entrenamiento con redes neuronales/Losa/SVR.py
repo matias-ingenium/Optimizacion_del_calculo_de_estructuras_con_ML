@@ -149,7 +149,7 @@ def evaluate_model_performance(
         sol_real_train = np.matmul(reduced_basis, y_train[i])
         sol_pred_train = np.matmul(reduced_basis, y_pred_train[i])
         norm_sol_real_train = np.linalg.norm(sol_real_train)
-        if norm_sol_real_train < 1e-9: # Evitar división por cero si la norma es muy pequeña
+        if norm_sol_real_train < 1e-6: # Evitar división por cero si la norma es muy pequeña
              error_relativo_train.append(np.linalg.norm(sol_real_train - sol_pred_train)) # Error absoluto en este caso
         else:
             error_relativo_train.append(np.linalg.norm(sol_real_train - sol_pred_train) / norm_sol_real_train)
@@ -169,7 +169,7 @@ def evaluate_model_performance(
         sol_real_test = np.matmul(reduced_basis, y_test[i])
         sol_pred_test = np.matmul(reduced_basis, y_pred_test[i])
         norm_sol_real_test = np.linalg.norm(sol_real_test)
-        if norm_sol_real_test < 1e-9:
+        if norm_sol_real_test < 1e-6:
             error_relativo_test.append(np.linalg.norm(sol_real_test - sol_pred_test))
         else:
             error_relativo_test.append(np.linalg.norm(sol_real_test - sol_pred_test) / norm_sol_real_test)
@@ -192,7 +192,7 @@ def evaluate_model_performance(
         sol_pred_train = np.matmul(reduced_basis, y_pred_train[i])
         res_abs_train = np.abs(sol_real_train - sol_pred_train)
         max_abs_sol_real_train = np.max(np.abs(sol_real_train))
-        if max_abs_sol_real_train < 1e-9:
+        if max_abs_sol_real_train < 1e-6:
              errores_max_comp_train.append(np.max(res_abs_train)) # Error absoluto en este caso
         else:
             errores_max_comp_train.append(np.max(res_abs_train) / max_abs_sol_real_train)
@@ -212,7 +212,7 @@ def evaluate_model_performance(
         sol_pred_test = np.matmul(reduced_basis, y_pred_test[i])
         res_abs_test = np.abs(sol_real_test - sol_pred_test)
         max_abs_sol_real_test = np.max(np.abs(sol_real_test))
-        if max_abs_sol_real_test < 1e-9:
+        if max_abs_sol_real_test < 1e-6:
             errores_max_comp_test.append(np.max(res_abs_test))
         else:
             errores_max_comp_test.append(np.max(res_abs_test) / max_abs_sol_real_test)
