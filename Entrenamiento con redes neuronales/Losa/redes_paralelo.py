@@ -11,22 +11,18 @@ RESET = "\033[0m"
 
 import os
 
-# --- Carga o generación de datos (con nuevo subdirectorio) ---
-data_dir = "losa/elementos de prueba"  # nombre del nuevo directorio
-training_file = os.path.join(data_dir, "prueba_train_4000_chico.pkl")
-testing_file = os.path.join(data_dir, "prueba_test_40_chico.pkl")
+# --- Carga o generación de datos ---
+data_dir = "losa/elementos de prueba" 
+training_file = os.path.join(data_dir, "prueba_train_4000_17.pkl")
+testing_file = os.path.join(data_dir, "prueba_test_30_17.pkl")
 
 if os.path.exists(training_file) and os.path.exists(testing_file):
-    # Aquí iría la carga de los datos
-    pass
-
     with open(training_file, "rb") as f:
         reduced_basis, salidas, training_set, snapshots_matrix = pickle.load(f)
     with open(testing_file, "rb") as f:
         salidas_esperadas, testing_set, result_matrix = pickle.load(f)
     print("Datos cargados desde archivo.")
 else:
-    # (Este bloque se mantiene igual)
     from training_losa import training_data
     from testing_losa import testing_data
     start_time = time.time()
@@ -44,7 +40,7 @@ else:
         pickle.dump((salidas_esperadas, testing_set, result_matrix), f)
     print("Datos generados y guardados.")
 
-# --- Función de costo (sin cambios) ---
+# --- Función de costo ---
 def custom_loss_factory(reduced_basis_tensor):
     def loss(y_pred, y_true):
         recon_pred = torch.matmul(y_pred, reduced_basis_tensor.T)
@@ -55,7 +51,7 @@ def custom_loss_factory(reduced_basis_tensor):
 reduced_basis_tensor = torch.tensor(reduced_basis, dtype=torch.float32).to("cuda" if torch.cuda.is_available() else "cpu")
 loss_func = custom_loss_factory(reduced_basis_tensor)
 
-# --- ✨ FUNCIÓN PARA ENTRENAR Y EVALUAR UNA RED (CON TUS MÉTRICAS) ✨ ---
+# --- ✨ FUNCIÓN PARA ENTRENAR Y EVALUAR UNA RED ✨ ---
 def entrenar_y_evaluar_red(params):
     """
     Función que crea, entrena y evalúa una red neuronal con las métricas específicas.
@@ -133,11 +129,10 @@ def entrenar_y_evaluar_red(params):
     
     return resultados_red
 
-# --- 🚀 PARALELIZACIÓN DEL ENTRENAMIENTO (CORREGIDO) 🚀 ---
+# --- 🚀 PARALELIZACIÓN DEL ENTRENAMIENTO 🚀 ---
 import multiprocessing as mp
 
 if __name__ == '__main__':
-    # --- ✨ LÍNEA CLAVE PARA SOLUCIONAR EL ERROR DE CUDA ✨ ---
     # Establecer el método de inicio a 'spawn' antes de crear el Pool
     try:
         mp.set_start_method('spawn', force=True)
@@ -170,7 +165,7 @@ if __name__ == '__main__':
     duration_total = time.time() - start_time_total
     print(f"\n{GREEN}Tiempo total de entrenamiento paralelo: {duration_total:.2f} segundos{RESET}")
 
-    # (El resto del código para imprimir los resultados se mantiene igual)
+
     # --- 🏆 PRESENTACIÓN DE RESULTADOS DETALLADOS 🏆 ---
     resultados_ordenados = sorted(resultados, key=lambda x: x['test']['relativo']['medio'])
     

@@ -56,10 +56,10 @@ class RED_NEURONAL:
     def _construir_modelo(self):
         capas = []
         capas.append(nn.Linear(self.n, self.neuronas))
-        capas.append(nn.LeakyReLU())
+        capas.append(nn.PReLU())
         for _ in range(self.capas - 1):
             capas.append(nn.Linear(self.neuronas, self.neuronas))
-            capas.append(nn.LeakyReLU())
+            capas.append(nn.PReLU())
         capas.append(nn.Linear(self.neuronas, self.m))
         return nn.Sequential(*capas)
 
@@ -87,16 +87,16 @@ class RED_NEURONAL:
 
             # Condición de parada temprana
             if loss.item() < self.tol or epochs_no_improve >= self.no_improvement_limit:
-                print(f"Parada temprana en la época {epoch}, pérdida: {loss.item():.8f}")
+                print(f"Parada temprana en la época {epoch}, pérdida: {loss.item():.10f}")
                 break
 
             if epoch % 200 == 0:
-                print(f"Época {epoch}, Pérdida: {loss.item():.8f}, lr: {scheduler.get_last_lr()[0]}")
+                print(f"Época {epoch}, Pérdida: {loss.item():.10f}, lr: {scheduler.get_last_lr()[0]}")
 
         # Restaurar el mejor modelo
         if best_model_state is not None:
             self.model.load_state_dict(best_model_state)
-            print(f"Modelo restaurado a la mejor pérdida: {best_loss:.8f}")
+            print(f"Modelo restaurado a la mejor pérdida: {best_loss:.10f}")
 
 
     def predecir(self, entrada):

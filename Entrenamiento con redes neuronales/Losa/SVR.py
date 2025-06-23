@@ -9,15 +9,16 @@ from sklearn.svm import SVR
 from sklearn.multioutput import MultiOutputRegressor
 from sklearn.preprocessing import StandardScaler
 
-# --- Constantes para colores (opcional, para mejorar la legibilidad del output) ---
+# --- Constantes para colores ---
 GREEN = "\033[92m"
 RESET = "\033[0m"
 BLUE = "\033[94m"
 YELLOW = "\033[93m"
 
-# --- Definición de nombres de archivo ---
-training_file = "prueba_train_4000_chico.pkl"
-testing_file = "prueba_test_40_chico.pkl"
+
+# Definir nombres de archivo para facilitar su modificación
+training_file = "losa/elementos de prueba/prueba_train_4000_chico.pkl"
+testing_file = "losa/elementos de prueba/prueba_test_40_chico.pkl"
 
 # --- Carga o generación de datos ---
 if os.path.exists(training_file) and os.path.exists(testing_file):
@@ -55,14 +56,6 @@ X_train_scaled = scaler_X.fit_transform(training_set)
 X_test_scaled = scaler_X.transform(testing_set)
 
 
-# ... (después del bucle de modelos lineales o en una nueva sección) ...
-
-# (Opcional pero puede ser necesario) Escalar características de salida (Y)
-# Si tus 'salidas' tienen rangos muy diferentes o están muy sesgadas,
-# escalarlas puede ayudar mucho a SVR.
-# scaler_Y = StandardScaler()
-# Y_train_scaled = scaler_Y.fit_transform(salidas)
-# Y_test_original_shape_for_inverse_transform = salidas_esperadas.shape # Para cuando hagas inverse_transform
 
 # Define el modelo base y el MultiOutputRegressor si es necesario
 if salidas.ndim > 1 and salidas.shape[1] > 1:
@@ -100,15 +93,6 @@ print(grid_search.best_params_)
 
 best_svr_model = grid_search.best_estimator_
 
-# Evaluar el mejor modelo
-# Si escalaste Y, necesitarás predecir y luego hacer inverse_transform en las predicciones
-# y_pred_train_scaled = best_svr_model.predict(X_train_scaled)
-# y_pred_train = scaler_Y.inverse_transform(y_pred_train_scaled)
-# y_pred_test_scaled = best_svr_model.predict(X_test_scaled)
-# y_pred_test = scaler_Y.inverse_transform(y_pred_test_scaled.reshape(Y_test_original_shape_for_inverse_transform)) # Asegurar shape
-# Y luego pasar y_pred_train, y_pred_test (sin escalar) a tu función de evaluación.
-# Por ahora, asumiendo que no escalaste Y:
-# --- Función de evaluación generalizada ---
 
 def evaluate_model_performance(
     model,
@@ -160,7 +144,7 @@ def evaluate_model_performance(
     print(f"Error Maximo: {np.max(error_relativo_train):.4e}")
     arg_max_train = np.argmax(error_relativo_train)
     print(f"Parametro de error maximo: {params_train_original[arg_max_train]}")
-    # print(f"Norma de la solución real (error máximo): {np.linalg.norm(np.matmul(reduced_basis, y_train[arg_max_train])):.4e}")
+ 
 
 
     # Testeo
@@ -180,7 +164,7 @@ def evaluate_model_performance(
     print(f"Error Maximo: {np.max(error_relativo_test):.4e}")
     arg_max_test = np.argmax(error_relativo_test)
     print(f"Parametro de error maximo: {params_test_original[arg_max_test]}")
-    # print(f"Norma de la solución real (error máximo): {np.linalg.norm(np.matmul(reduced_basis, y_test[arg_max_test])):.4e}")
+
 
     # --- Evaluación con Error Máximo (componente a componente) ---
     print(f"\n\033[1;37;44m  Con error máximo (componente a componente relativo al max de la solución real)  \033[0m")
@@ -203,7 +187,7 @@ def evaluate_model_performance(
     print(f"Error Maximo: {np.max(errores_max_comp_train):.4e}")
     arg_max_comp_train = np.argmax(errores_max_comp_train)
     print(f"Parametro de error maximo: {params_train_original[arg_max_comp_train]}")
-    # print(f"Norma de la solución real (error máximo): {np.linalg.norm(np.matmul(reduced_basis, y_train[arg_max_comp_train])):.4e}")
+
 
     # Testeo
     errores_max_comp_test = []
@@ -223,7 +207,7 @@ def evaluate_model_performance(
     print(f"Error Maximo: {np.max(errores_max_comp_test):.4e}")
     arg_max_comp_test = np.argmax(errores_max_comp_test)
     print(f"Parametro de error maximo: {params_test_original[arg_max_comp_test]}")
-    # print(f"Norma de la solución real (error máximo): {np.linalg.norm(np.matmul(reduced_basis, y_test[arg_max_comp_test])):.4e}")
+
 
 evaluate_model_performance(
     model=best_svr_model,

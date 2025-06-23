@@ -12,9 +12,10 @@ RESET = "\033[0m"
 BLUE = "\033[94m"
 YELLOW = "\033[93m"
 
-# --- Definición de nombres de archivo ---
-training_file = "prueba_train_4000_chico.pkl"
-testing_file = "prueba_test_40_chico.pkl"
+# Definir nombres de archivo para facilitar su modificación
+training_file = "losa/elementos de prueba/prueba_train_4000_chico.pkl"
+testing_file = "losa/elementos de prueba/prueba_test_40_chico.pkl"
+
 
 # --- Carga o generación de datos ---
 if os.path.exists(training_file) and os.path.exists(testing_file):

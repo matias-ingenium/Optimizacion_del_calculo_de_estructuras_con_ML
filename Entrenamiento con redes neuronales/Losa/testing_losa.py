@@ -15,15 +15,15 @@ def testing_data(n, reduced_basis):
 
     # Parámetros del dominio
     Lx, Ly = 5.0, 5.0  # Tamaño del cuadrado
-    nx, ny = 32, 32    # Número de divisiones de la malla
+    nx, ny = 17, 17    # Número de divisiones de la malla
 
-        # Crear la malla del cuadrado
+    # Crear la malla del cuadrado
     mesh = RectangleMesh(Point(0.0, 0.0), Point(Lx, Ly), nx, ny)
       
 
     # Definir elementos finitos y espacio mixto
-    V = FiniteElement("P", mesh.ufl_cell(), 1)  # Subimos a grado 3 para mayor estabilidad
-    W = FiniteElement("P", mesh.ufl_cell(), 1)  # Igual para w
+    V = FiniteElement("P", mesh.ufl_cell(), 1)  
+    W = FiniteElement("P", mesh.ufl_cell(), 1)  
     M = FunctionSpace(mesh, MixedElement([V, W]))  # Espacio mixto
 
     snapshots_matrix = np.zeros((M.dim()//2, len(training_set)))
@@ -81,12 +81,6 @@ def testing_data(n, reduced_basis):
 
         # Extraer u y w
         u, w = sol.split(deepcopy=True)
-
-        if j<2:
-            import matplotlib.pyplot as plt
-            plot_obj= plot(w, title= f"sol para {mu}")
-            plt.colorbar(plot_obj, label="Valor de w")
-            plt.show()
 
         print(f"\033[1;37;44m  Paso: {j}  \033[0m")  # Texto blanco con fondo azul
 

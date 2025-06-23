@@ -6,9 +6,11 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 
+
 # Definir nombres de archivo para facilitar su modificación
-training_file = "prueba_train_100.pkl"
-testing_file = "prueba_test_20.pkl"
+training_file = "losa/elementos de prueba/prueba_train_4000_chico.pkl"
+testing_file = "losa/elementos de prueba/prueba_test_40_chico.pkl"
+
 
 if os.path.exists(training_file) and os.path.exists(testing_file):
     with open(training_file, "rb") as f:

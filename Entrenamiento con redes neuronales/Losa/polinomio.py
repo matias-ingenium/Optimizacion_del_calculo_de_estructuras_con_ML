@@ -12,8 +12,9 @@ best_model = None
 best_error = float("inf")
 
 # Definir nombres de archivo para facilitar su modificación
-training_file = "prueba_train_1000_chico.pkl"
-testing_file = "prueba_test_30_chico.pkl"
+training_file = "losa/elementos de prueba/prueba_train_4000_chico.pkl"
+testing_file = "losa/elementos de prueba/prueba_test_40_chico.pkl"
+
 
 if os.path.exists(training_file) and os.path.exists(testing_file):
     with open(training_file, "rb") as f:

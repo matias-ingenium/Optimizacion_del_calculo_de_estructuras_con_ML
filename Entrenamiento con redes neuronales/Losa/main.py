@@ -10,8 +10,8 @@ GREEN = "\033[92m"
 RESET = "\033[0m"
 
 # Definir nombres de archivo para facilitar su modificación
-training_file = "prueba_train_4000_chico.pkl"
-testing_file = "prueba_test_40_chico.pkl"
+training_file = "losa/elementos de prueba/prueba_train_1000_17_1.pkl"
+testing_file = "losa/elementos de prueba/prueba_test__1_17.pkl"
 
 if os.path.exists(training_file) and os.path.exists(testing_file):
     with open(training_file, "rb") as f:
@@ -28,14 +28,14 @@ else:
     
     
     reduced_basis, salidas, training_set, snapshots_matrix = training_data(
-        4000
+        1000
     )
     duration = time.time() - start_time
 
     print(f"{GREEN}Duración de training_data: {duration:.2f} segundos{RESET}")
 
     salidas_esperadas, testing_set, result_matrix = testing_data(
-        40, reduced_basis
+        1, reduced_basis
     )
 
     # Convertir a arrays de NumPy
@@ -76,9 +76,9 @@ red2 = RED_NEURONAL(
     training_set=training_set,
     salidas=salidas,
     funcion_costo= loss_func,
-    max_epochs=50000,
-    capas_ocultas=2,
-    neuronas_por_capa=140,
+    max_epochs=100000,
+    capas_ocultas=3,
+    neuronas_por_capa=150,
     lr=0.008,
     tol=0,
     min_delta=0,
@@ -93,6 +93,7 @@ print(f"{GREEN}Duración de entrenamiento de la red: {duration:.2f} segundos{RES
 
 print(f"\033[1;37;44m  Con error relativo  \033[0m")
 error_relativo=[]
+ini_online= time.time()
 for i in range(len(training_set)):
 
   if np.linalg.norm(np.matmul(reduced_basis,salidas[i]))>1e-4:
@@ -101,6 +102,7 @@ for i in range(len(training_set)):
     res=np.matmul(reduced_basis,salidas[i])-np.matmul(reduced_basis,prediccion[0])
     error_relativo.append(np.linalg.norm(res)/np.linalg.norm(np.matmul(reduced_basis,salidas[i])))
 
+fin_online= time.time()
 print("ENTRENAMIENTO")
 print("Error Medio: ", np.mean(error_relativo))
 print("Varianza: ", np.var(error_relativo))
@@ -162,3 +164,4 @@ arg_max = np.argmax(errores)
 print("Parametro de error maximo: ", testing_set[arg_max])
 print("Norma del error máximo: ", np.linalg.norm(np.matmul(reduced_basis,salidas_esperadas[arg_max])))
 
+print("Tiempo promedio de etapa online: ", (fin_online - ini_online)/len(training_set))

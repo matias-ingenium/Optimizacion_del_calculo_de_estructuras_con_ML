@@ -7,15 +7,16 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import StandardScaler
 
-# --- Constantes para colores (opcional) ---
+# --- Constantes para colores  ---
 GREEN = "\033[92m"
 RESET = "\033[0m"
 BLUE = "\033[94m"
 YELLOW = "\033[93m"
 
-# --- Definición de nombres de archivo ---
-training_file = "prueba_train_4000_chico.pkl"
-testing_file = "prueba_test_40_chico.pkl"
+# Definir nombres de archivo para facilitar su modificación
+training_file = "losa/elementos de prueba/prueba_train_4000_chico.pkl"
+testing_file = "losa/elementos de prueba/prueba_test_40_chico.pkl"
+
 
 # --- Carga o generación de datos ---
 if os.path.exists(training_file) and os.path.exists(testing_file):
@@ -74,7 +75,7 @@ if salidas_esperadas.ndim == 1:
 # Por ejemplo, si salidas.shape[1] == 1: salidas = salidas.ravel()
 # Pero para RandomForestRegressor, (N_samples, 1) está bien.
 
-# --- Función de evaluación generalizada (la misma que antes) ---
+# --- Función de evaluación generalizada  ---
 def evaluate_model_performance(
     model,
     X_train_transformed,
@@ -184,12 +185,7 @@ scaler_X = StandardScaler()
 X_train_scaled = scaler_X.fit_transform(training_set)
 X_test_scaled = scaler_X.transform(testing_set)
 
-# (Opcional) Escalado de Características de Salida (Y)
-# RandomForest es generalmente robusto a la escala de Y.
-# No lo haremos por defecto aquí, pero puedes probarlo si los resultados no son buenos.
-# scaler_Y = StandardScaler()
-# Y_train_scaled = scaler_Y.fit_transform(salidas)
-# Y_test_scaled_for_eval = scaler_Y.transform(salidas_esperadas) # Solo para evaluación si fuera necesario
+
 
 # --- Ajuste de Hiperparámetros para RandomForestRegressor ---
 # Define el modelo y la parrilla de parámetros
@@ -242,9 +238,7 @@ print(grid_search_rf.best_params_)
 
 best_rf_model = grid_search_rf.best_estimator_
 
-# --- Evaluación del Mejor Modelo RandomForest ---
-# Si escalaste Y, recuerda hacer inverse_transform en las predicciones antes de evaluar.
-# Por ahora, asumimos que no escalaste Y.
+
 
 evaluate_model_performance(
     model=best_rf_model,

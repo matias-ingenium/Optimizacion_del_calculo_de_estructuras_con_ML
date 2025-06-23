@@ -16,9 +16,10 @@ C_BLUE_BOLD = "\033[1;37;44m"
 C_GREEN_BOLD = "\033[1;32m"
 C_RESET = "\033[0m"
 
-# --- 1. Carga de Datos (Sin cambios) ---
-training_file = "prueba_train_1000_chico.pkl"
-testing_file = "prueba_test_30_chico.pkl"
+# Definir nombres de archivo para facilitar su modificación
+training_file = "losa/elementos de prueba/prueba_train_4000_chico.pkl"
+testing_file = "losa/elementos de prueba/prueba_test_40_chico.pkl"
+
 
 try:
     with open(training_file, "rb") as f:
@@ -34,7 +35,7 @@ X_train, y_train = np.array(training_set), np.array(salidas)
 X_test, y_test = np.array(testing_set), np.array(salidas_esperadas)
 V = np.array(reduced_basis)
 
-# --- 2. Transformador Personalizado (Sin cambios) ---
+# --- 2. Transformador Personalizado  ---
 class InverseFeatures(BaseEstimator, TransformerMixin):
     def __init__(self, powers=[-1, -2, -3]): self.powers = powers
     def fit(self, X, y=None): return self
@@ -44,7 +45,7 @@ class InverseFeatures(BaseEstimator, TransformerMixin):
             for p in self.powers: X_inv = np.c_[X_inv, np.power(X, p)]
         return np.nan_to_num(X_inv)
 
-# --- 3. Función de Evaluación (Sin cambios) ---
+# --- 3. Función de Evaluación  ---
 def evaluar_y_mostrar_resultados(model, name, X_train, y_train, X_test, y_test, V):
     print(f"\n--- Evaluando Modelo Final: {name} ---")
     y_pred_train = model.predict(X_train)
@@ -66,7 +67,7 @@ def evaluar_y_mostrar_resultados(model, name, X_train, y_train, X_test, y_test, 
     }
 
 # --- 4. Definición de Pipelines y Rejillas de Búsqueda ---
-# Nos enfocaremos en los modelos que tienen hiperparámetros críticos que tunear.
+
 
 # Pipeline para ElasticNet
 pipe_elastic = Pipeline([
